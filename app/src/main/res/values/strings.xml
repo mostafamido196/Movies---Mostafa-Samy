@@ -1,3 +1,43 @@
 <resources>
     <string name="app_name">Mostafa Samy</string>
+
+    <string name="internet_connection">no internet connection</string>
+    <string name="x_api_key_error">You do not have access to it .</string>
+    <string name="auth_error">Your permission session on this app has expired, log in again .</string>
+    <string name="known_error">Unknown error we will try to fix as soon as possible .</string>
+    <string name="test">test</string>
+    <string name="okay">OK</string>
+    <string name="not_found">Not found</string>
+    <string name="copied">Copied!</string>
+    <string name="develocity">Develocity</string>
+    <string name="management_app">Management App</string>
+    <string name="login_to_your_account">Login to your account</string>
+    <string name="email">Email</string>
+    <string name="email_2">Email *</string>
+    <string name="password">Password</string>
+    <string name="password_2">Password *</string>
+    <string name="login">Login</string>
+    <string name="login_by">Or Login with</string>
+    <string name="signup_new_user">Don’t have an account? <font fgcolor="#696cff">Sign Up</font></string>
+    <string name="login_user">Have an account? <font fgcolor="#696cff">Login</font></string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="username">User Name *</string>
+    <string name="create_your_account">Create your account</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="increase_work_effectiveness">Increase Work Effectiveness</string>
+    <string name="time_management_and_the_determination_of_more_important_tasks_will_give_your_job_statistics_better_and_always_improve">Time management and the determination of more important tasks will give your job statistics better and always improve</string>
+    <string name="the_advantage_of_this_application_is_that_it_also_provides_reminders_for_you_so_you_don_t_forget_to_keep_doing_your_assignments_well_and_according_to_the_time_you_have_set">The advantage of this application is that it also provides reminders for you so you don\'t forget to keep doing your assignments well and according to the time you have set</string>
+    <string name="reminder_notification">Reminder Notification</string>
+    <string name="easy_time_management">Easy Time Management</string>
+    <string name="with_management_based_on_priority_and_daily_tasks_it_will_give_you_convenience_in_managing_and_determining_the_tasks_that_must_be_done_first">With management based on priority and daily tasks, it will give you convenience in managing and determining the tasks that must be done first</string>
+    <string name="confirm">Confirm</string>
+    <string name="verify_account">Verify Account</string>
+    <string name="don_t_receive_a_code_resend">Don’t receive a code? <font fgcolor="#696cff">Resend</font></string>
+    <string name="please_enter_the_verification_number_we_send_to_your_email">Please enter the verification number\n we send to your email</string>
+    <string name="go_to_home">Go to Home</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
