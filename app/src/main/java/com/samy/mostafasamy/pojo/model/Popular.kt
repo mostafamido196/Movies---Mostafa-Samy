@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "PopularList")
 data class Popular(
-    @PrimaryKey val id: Int,//
+    @PrimaryKey val id: Long,//
     val title: String,//
     val poster_path: String,//img
     val release_date: String,//

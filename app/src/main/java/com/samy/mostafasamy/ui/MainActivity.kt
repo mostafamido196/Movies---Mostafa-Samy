@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.samy.mostafasamy.databinding.ActivityMainBinding
 import com.samy.mostafasamy.pojo.response.PopularResponse
-import com.samy.mostafasamy.ui.home.HomeViewModel
 import com.samy.mostafasamy.utils.NetworkState
 import dagger.hilt.android.AndroidEntryPoint
 

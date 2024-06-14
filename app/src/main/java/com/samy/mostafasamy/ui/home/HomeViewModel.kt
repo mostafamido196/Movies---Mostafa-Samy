@@ -8,6 +8,7 @@ import com.samy.mostafasamy.di.BaseApp
 import com.samy.mostafasamy.pojo.model.Popular
 import com.samy.mostafasamy.pojo.response.PopularResponse
 import com.samy.mostafasamy.utils.NetworkState
+import com.samy.mostafasamy.utils.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,18 +27,24 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository) 
     val topRateMovieSateFlow get() = _topRateMovieStateFlow
 
 
+
     fun getPopular() {
-            _popularMovieStateFlow.value = NetworkState.Loading
-            viewModelScope.launch(Dispatchers.IO) {
-                runApi(
+        _popularMovieStateFlow.value = NetworkState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+//            if (Utils.isInternetAvailable()) {
+//                Log.d("hamoly","if ")
+                runApi<PopularResponse, Popular>(
                     _popularMovieStateFlow,
                     repository.getPopularMovie(authorization),
                     converter = { data: PopularResponse -> convertToPopular(data) },
-                    caching = { data: List<Popular> -> caching(data) },
-                    getCaching = { getPopularCached() }
+                    caching = { data: List<Popular> -> cachingPopular(data) },
+//                    getCaching = { getPopularCached() }
                 )
-
-            }
+//            }else{
+//                Log.d("hamoly","else ")
+//                NetworkState.Result(getPopularCached())
+//            }
+        }
 
     }
 
@@ -45,12 +52,17 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository) 
         return BaseApp.database.popularDao().getAllPopular()
     }
 
-    private fun caching(populars: List<Popular>) {
+    private fun cachingPopular(populars: List<Popular>) {
         // check if the 4 hours old
         viewModelScope.launch {
             // cache
             populars.map { popular ->
-                BaseApp.database.popularDao().insertPopular(popular)
+                try {
+                    BaseApp.database.popularDao().insertPopular(popular)
+
+                }catch (e:Exception){
+                    Log.d("hamoly","cachingPopular: e: ${e.message}")
+                }
             }
         }
     }
@@ -63,20 +75,13 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository) 
         return populars
     }
 
-//    fun getTopRate() {
-//
-//        _topRateMovieStateFlow.value = NetworkState.Loading
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//            runApi(
-//                _topRateMovieStateFlow,
-//                repository.getTopRateMovie(authorization)
-//            )
-//        }
-
-//    }
-
-
+    // called from fragment
+    public fun popularCached() {
+        _popularMovieStateFlow.value = NetworkState.Loading
+        viewModelScope.launch {
+            _popularMovieStateFlow.value = NetworkState.Result(BaseApp.database.popularDao().getAllPopular())
+        }
+    }
 }
 
 class HomeRepository @Inject

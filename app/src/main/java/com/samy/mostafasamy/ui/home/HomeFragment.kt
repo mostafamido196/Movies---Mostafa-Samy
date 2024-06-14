@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.util.Util
 import com.samy.mostafasamy.R
 import com.samy.mostafasamy.databinding.FragmentHomeBinding
 import com.samy.mostafasamy.di.BaseApp
@@ -104,13 +105,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun data() {
-        try {
+        Log.d("hamoly", "data")
+        if (Utils.isInternetAvailable()) {
+            Log.d("hamoly", " if (Utils.isInternetAvailable())")
             viewModel.getPopular()
+        } else {
+            Log.d("hamoly", "else ")
+            viewModel.popularCached()
+        }
 //        viewModel.getTopRate()
 
-        } catch (e: Exception) {
-            Log.d("hamoly", "e: ${e.message}")
-        }
     }
 
     private fun observe() {
@@ -142,34 +146,8 @@ class HomeFragment : Fragment() {
 
 
         }
-        /*lifecycleScope.launch {
-            viewModel.topRateMovieSateFlow.collect {
-                Log.d("hamoly", "it.msg: ${it}")
-                when (it) {
-                    is NetworkState.Idle -> {
-                        return@collect
-                    }
-
-                    is NetworkState.Loading -> {
-//                        visProgress(true)
-                    }
-
-                    is NetworkState.Error -> {
-//                        visProgress(false)
-//                        it.handleErrors(mContext, null)
-                    }
-
-                    is NetworkState.Result<*> -> {
-//                        visProgress(false)
-                        handleResult(it.response as TopRatedResponse)
-
-                    }
-                }
-
-            }
 
 
-        }*/
     }
 
     fun <T> handleResult(response: T) {

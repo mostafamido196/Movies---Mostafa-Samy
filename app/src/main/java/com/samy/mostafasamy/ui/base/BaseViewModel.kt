@@ -19,128 +19,57 @@ open class BaseViewModel @Inject constructor() :
     ViewModel() {
 
     @Inject
-    public lateinit var sharedHelper: SharedHelper
+    lateinit var sharedHelper: SharedHelper
 
-//    private val userData: User?
-//        get() = sharedHelper.userData()
 
     val authorization: String
         get() = sharedHelper.token
 
-//    fun saveUserData(user: User, token: String) {
-//        sharedHelper.setUserData(user, token)
-//    }
-
-//    val adminData: AdminLoginResponse.Admin?
-//        get() = sharedHelper.adminData()
-
-//    fun saveAdminData(user: AdminLoginResponse.Admin, token: String) {
-//        sharedHelper.setAdminData(user, token)
-//    }
-
-//    fun saveUserType(type: String) {
-//        sharedHelper.saveUserType(type)
-//    }
-//
-//    fun userType(): String = sharedHelper.userType
-
-//    fun isLogged(): Boolean = userData != null
-
-//    fun lang(): String = sharedHelper.lang
-//
-//    fun isDarkModeEnabled(): Boolean = sharedHelper.isDarkModeEnabled()
-
-//    fun setDarkModeEnabled(is_dark: Boolean) = sharedHelper.setDarkModeEnabled(is_dark)
-//
-//    fun saveLang(lang: String) = sharedHelper.saveLang(lang)
-
-//    fun signOut() = sharedHelper.signOut()
-
-//    fun startAuth(mContext: Context) {
-//        val intent = Intent(mContext, AuthActivity::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//        mContext.startActivity(intent)
-//    }
 
     fun <T, V> runApi(
         _apiStateFlow: MutableStateFlow<NetworkState>,
         block: Response<T>,
-        converter: ((T) -> V)? = null,
-        caching: ((V) -> Unit)? = null,
-        getCaching: (suspend () -> Unit)? = null,
+        converter: ((T) -> List<V>)? = null,
+        caching: ((List<V>) -> Unit)? = null,
+//        getCaching: (suspend () -> Unit)? = null,
     ) {
-        Log.d("hamoly","runApi")
+        Log.d("hamoly", "runApi")
         _apiStateFlow.value = NetworkState.Loading
         try {
-            Log.d("hamoly","try")
+            Log.d("hamoly", "try")
             if (Utils.isInternetAvailable()) {
-                Log.d("hamoly","Utils.isInternetAvailable")
+                Log.d("hamoly", "Utils.isInternetAvailable")
                 //api
                 CoroutineScope(Dispatchers.IO).launch {
 
                     kotlin.runCatching {
                         block
                     }.onFailure {
-
-                        Log.e(TAG, "runApi: 3")
-                        when (it) {
-                            is java.net.UnknownHostException ->
-                                _apiStateFlow.value =
-                                    NetworkState.Error(Constants.Codes.EXCEPTIONS_CODE)
-
-                            is java.net.ConnectException ->
-                                _apiStateFlow.value =
-                                    NetworkState.Error(Constants.Codes.EXCEPTIONS_CODE)
-
-                            else -> _apiStateFlow.value =
-                                NetworkState.Error(Constants.Codes.UNKNOWN_CODE)
-                        }
-
+                        Log.e(TAG, "runApi: 3:it.message: ${it.message}")
                     }.onSuccess {
                         Log.e(TAG, "runApi: 4")
                         if (it.body() != null) {
-//                            if (converter != null)
-//                                _apiStateFlow.value = NetworkState.Result(converter(it.body()!!))
-//                            else
+                            if (converter != null)
+                                _apiStateFlow.value = NetworkState.Result(converter(it.body()!!))
+                            else
                                 _apiStateFlow.value = NetworkState.Result(it.body())
-//                            if (converter != null && caching != null) caching(converter(it.body()!!))
+                            if (caching != null && converter != null)
+                                    caching(converter(it.body()!!))
                         } else {
                             Log.e(TAG, "runApi: ${it.errorBody()}")
                             _apiStateFlow.value = NetworkState.Error(Constants.Codes.UNKNOWN_CODE)
                         }
                     }
-
                 }
-//            } else {
-               /* //room
-                CoroutineScope(Dispatchers.IO).launch {
-
-                    kotlin.runCatching {
-                        block
-                    }.onFailure {
-
-                        Log.e(TAG, "runApi: 3")
-                        when (it) {
-                            is java.net.UnknownHostException ->
-                                _apiStateFlow.value =
-                                    NetworkState.Error(Constants.Codes.EXCEPTIONS_CODE)
-
-                            is java.net.ConnectException ->
-                                _apiStateFlow.value =
-                                    NetworkState.Error(Constants.Codes.EXCEPTIONS_CODE)
-
-                            else -> _apiStateFlow.value =
-                                NetworkState.Error(Constants.Codes.UNKNOWN_CODE)
-                        }
-
-                    }.onSuccess {
-                        if (getCaching != null) {
-                            _apiStateFlow.value = NetworkState.Result(getCaching())
-                        }
+            } /*else {
+                if (getCaching != null) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        getCaching()
                     }
                 }
-//                _apiStateFlow.value = NetworkState.Error(Constants.Codes.EXCEPTIONS_CODE)*/
-            }
+
+
+            }*/
         } catch (e: Exception) {
             Log.e(TAG, "runApi: ${e.message}")
         }
@@ -150,15 +79,6 @@ open class BaseViewModel @Inject constructor() :
 
     companion object {
         private val TAG = this::class.java.name
-
-//        fun signOut(mContext: Context) = SharedHelper(mContext).signOut()
-
-//        fun startAuth(mContext: Context) {
-//            val intent = Intent(mContext, AuthActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            mContext.startActivity(intent)
-//        }
-
     }
 
 }

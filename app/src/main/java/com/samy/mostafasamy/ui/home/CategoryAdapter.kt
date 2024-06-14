@@ -13,6 +13,7 @@ import com.samy.mostafasamy.R
 import com.samy.mostafasamy.databinding.ItemCategoryBinding
 import com.samy.mostafasamy.pojo.model.Popular
 import com.samy.mostafasamy.utils.Constants
+import com.samy.mostafasamy.utils.Utils
 import javax.inject.Inject
 
 class CategoryAdapter @Inject constructor() :
@@ -47,6 +48,7 @@ class CategoryAdapter @Inject constructor() :
 
             binding.tvName.text = data.title
             binding.tvDate.text = data.release_date
+
 
             Glide.with(binding.root.context)
                 .load(Constants.POSTER_URL + data.poster_path)
