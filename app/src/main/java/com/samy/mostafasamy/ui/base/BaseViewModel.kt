@@ -29,9 +29,8 @@ open class BaseViewModel @Inject constructor() :
     fun <T, V> runApi(
         _apiStateFlow: MutableStateFlow<NetworkState>,
         block: Response<T>,
-        converter: ((T) -> List<V>)? = null,
-        caching: ((List<V>) -> Unit)? = null,
-//        getCaching: (suspend () -> Unit)? = null,
+        converter: ((T) -> V)? = null,
+        caching: ((V) -> Unit)? = null,
     ) {
         Log.d("hamoly", "runApi")
         _apiStateFlow.value = NetworkState.Loading
@@ -61,15 +60,8 @@ open class BaseViewModel @Inject constructor() :
                         }
                     }
                 }
-            } /*else {
-                if (getCaching != null) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        getCaching()
-                    }
-                }
+            }
 
-
-            }*/
         } catch (e: Exception) {
             Log.e(TAG, "runApi: ${e.message}")
         }

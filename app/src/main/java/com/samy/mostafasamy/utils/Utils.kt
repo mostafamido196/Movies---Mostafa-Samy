@@ -3,6 +3,7 @@ package com.samy.mostafasamy.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent.*
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -40,7 +41,56 @@ import kotlin.math.pow
 
 
 object Utils {
+    public fun setSharedPreferencesString(
+        context: Context, fileName: String, key: String, value: String
+    ) {
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences(fileName, MODE_PRIVATE)
+        val myEdit = sharedPreferences.edit()
+        myEdit.putString(key, value)
+        myEdit.apply()
+    }
+    public fun getSharedPreferencesString(
+        context: Context, fileName: String, key: String, defultValue: String
+    ): String? {
+        val sh: SharedPreferences = context.getSharedPreferences(fileName, MODE_PRIVATE)
+        val s = sh.getString(key, defultValue)
+        return s
+    }
+    public fun setSharedPreferencesInt(
+        context: Context, fileName: String, key: String, value: Int
+    ) {
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
+        val myEdit = sharedPreferences.edit()
+        myEdit.putInt(key, value)
+        myEdit.apply()
+    }
+    public fun getSharedPreferencesInt(
+        context: Context, fileName: String, key: String, defultValue: Int
+    ): Int {
+        val sh: SharedPreferences = context.getSharedPreferences(fileName, MODE_PRIVATE)
+        val s = sh.getInt(key, defultValue)
+        return s
+    }
 
+    public fun setSharedPreferencesBoolean(
+        context: Context, fileName: String, key: String, value: Boolean
+    ) {
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences(fileName, MODE_PRIVATE)
+        val myEdit = sharedPreferences.edit()
+        myEdit.putBoolean(key, value)
+        myEdit.apply()
+    }
+
+    public fun getSharedPreferencesBoolean(
+        context: Context, fileName: String, key: String, defultValue: Boolean
+    ): Boolean {
+        val sh: SharedPreferences = context.getSharedPreferences(fileName, MODE_PRIVATE)
+        val s = sh.getBoolean(key, defultValue)
+        return s
+    }
     fun getVerticalLayoutManager(mContext: Context): LinearLayoutManager =
         object : LinearLayoutManager(mContext, VERTICAL, false) {
             override fun canScrollVertically(): Boolean {

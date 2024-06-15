@@ -6,6 +6,10 @@ plugins {
     //
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+
+    // Apply the Safe Args plugin
+    id("androidx.navigation.safeargs.kotlin")
+
 }
 
 android {
@@ -99,6 +103,10 @@ dependencies {
     kapt (libs.androidx.room.compiler)
     implementation (libs.androidx.room.ktx)
 
+
+    //
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
 
 }

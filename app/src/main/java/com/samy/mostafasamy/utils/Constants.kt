@@ -7,7 +7,7 @@ import java.security.AccessController.getContext
 object Constants {
 
     const val BASE_URL = "https://api.themoviedb.org/3/"
-    const val Authorization = "1dfa6341ba4c0536e83d8405985afa6a"//Bearer 1dfa6341ba4c0536e83d8405985afa6a
+    const val Authorization = "1dfa6341ba4c0536e83d8405985afa6a"
     const val POSTER_URL: String = "https://image.tmdb.org/t/p/w500/"
 //    protected fun bind(movie: Movie) {
 //        Glide.with(getContext())
@@ -25,11 +25,18 @@ object Constants {
     const val SECTION = "section"
     const val BRANCH = "branch"
     const val ADMIN = "admin"
-    const val TASK_ID = "task_id"
     const val USER = "user"
     const val PROFILE = "profile"
     const val SEARCH_KEYWORD = "search_keyword"
     const val TASK = "task"
+    const val MOVIE_ID = "movie_id"
+    const val POPULARITY = "popularity"
+    const val OVERVIEW = "overview"
+    const val RELEASE_DATE = "release_date"
+    const val POSTER_PATH = "poster_path"
+    const val TITLE = "title"
+    const val VOTE_AVERAGE = "vote_average"
+    const val VOTE_COUNT = "vote_count"
 
     object ApisKeys {
         const val BEARER = "Bearer"

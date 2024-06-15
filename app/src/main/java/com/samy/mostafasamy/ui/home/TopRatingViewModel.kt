@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.samy.mostafasamy.data.remote.MovieServices
 import com.samy.mostafasamy.di.BaseApp
-import com.samy.mostafasamy.pojo.model.Popular
-import com.samy.mostafasamy.pojo.response.PopularResponse
+import com.samy.mostafasamy.pojo.model.TopRating
+import com.samy.mostafasamy.pojo.response.TopRatedResponse
 import com.samy.mostafasamy.ui.base.BaseViewModel
 import com.samy.mostafasamy.utils.NetworkState
 import com.samy.mostafasamy.utils.Utils
@@ -18,31 +18,29 @@ import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class TopRatingViewModel @Inject constructor(
     private val application: Application,
-    private val repository: HomeRepository) :
+    private val repository: TopRatingRepository) :
     BaseViewModel() {
 
-    private val _popularMovieStateFlow = MutableStateFlow<NetworkState>(NetworkState.Idle)
-    val popularMovieSateFlow get() = _popularMovieStateFlow
+    private val _topRateMovieStateFlow = MutableStateFlow<NetworkState>(NetworkState.Idle)
+    val topRateMovieSateFlow get() = _topRateMovieStateFlow
 
 
-
-
-    fun getPopular() {
-        _popularMovieStateFlow.value = NetworkState.Loading
+    fun getTopRating() {
+        _topRateMovieStateFlow.value = NetworkState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             if (Utils.isInternetAvailable()) {
                 Log.d("hamoly", " if (Utils.isInternetAvailable())")
-                runApi<PopularResponse, List<Popular>>(
-                    _popularMovieStateFlow,
-                    repository.getPopularMovie(authorization),
-                    converter = { data: PopularResponse -> convertToPopular(data) },
-                    caching = { data: List<Popular> -> cachingPopular(data) },
+                runApi<TopRatedResponse, List<TopRating>>(
+                    _topRateMovieStateFlow,
+                    repository.getTopRateMovie(authorization),
+                    converter = { data: TopRatedResponse -> convertToTopRating(data) },
+                    caching = { data: List<TopRating> -> cachingTopRating(data) },
                 )
             } else {
                 Log.d("hamoly", " else")
-                popularCached()
+                TopRatingCached()
 
             }
         }
@@ -50,13 +48,13 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun cachingPopular(populars: List<Popular>) {
+    private fun cachingTopRating(topRating: List<TopRating>) {
         if (spendForeHoursOrNull())
             viewModelScope.launch {
                 // cache
-                populars.map { popular ->
+                topRating.map {
                     try {
-                        BaseApp.database.popularDao().insertPopular(popular)
+                        BaseApp.database.topRatingDao().insertTopRating(it)
 
                     } catch (e: Exception) {
                         Log.d("hamoly", "cachingPopular: e: ${e.message}")
@@ -84,11 +82,11 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    private fun convertToPopular(popularResponse: PopularResponse): List<Popular> {
-        val populars = ArrayList<Popular>()
-        popularResponse.results.forEach { movie ->
-            populars.add(
-                Popular(
+    private fun convertToTopRating(topRatedResponse: TopRatedResponse): List<TopRating> {
+        val topRating = ArrayList<TopRating>()
+        topRatedResponse.results.forEach { movie ->
+            topRating.add(
+                TopRating(
                     movie.id,
                     movie.title,
                     movie.poster_path,
@@ -100,27 +98,28 @@ class HomeViewModel @Inject constructor(
                 )
             )
         }
-        return populars
+        return topRating
     }
 
     // called from fragment
-    private fun popularCached() {
-        _popularMovieStateFlow.value = NetworkState.Loading
+    public fun TopRatingCached() {
+        _topRateMovieStateFlow.value = NetworkState.Loading
         viewModelScope.launch {
-            _popularMovieStateFlow.value =
-                NetworkState.Result(BaseApp.database.popularDao().getAllPopular())
+            _topRateMovieStateFlow.value =
+                NetworkState.Result(BaseApp.database.topRatingDao().getAllTopRating())
         }
     }
 }
 
-class HomeRepository @Inject
+class TopRatingRepository @Inject
 constructor(private val movieServices: MovieServices) {
 
-    suspend fun getPopularMovie(
+ 
+
+
+    suspend fun getTopRateMovie(
         authorization: String,
-    ) = movieServices.getPopular(authorization)
-
-
+    ) = movieServices.getTopRated(authorization)
 
 
 }
