@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,7 @@ import com.samy.mostafasamy.databinding.FragmentSearchBinding
 import com.samy.mostafasamy.pojo.model.Search
 import com.samy.mostafasamy.utils.Constants
 import com.samy.mostafasamy.utils.NetworkState
+import com.samy.mostafasamy.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,15 +50,15 @@ class SearchFragment : Fragment() {
     private fun goto() {
         adapter.setOnItemClickListener {
             val bundle = Bundle()
-            bundle.putLong(Constants.MOVIE_ID,it.id )
-            bundle.putString(Constants.OVERVIEW,it.overview )
-            bundle.putDouble(Constants.POPULARITY,it.popularity)
-            bundle.putString(Constants.TITLE,it.title )
-            bundle.putString(Constants.POSTER_PATH,it.poster_path )
-            bundle.putString(Constants.RELEASE_DATE,it.release_date )
-            bundle.putDouble(Constants.VOTE_AVERAGE,it.vote_average )
-            bundle.putInt(Constants.VOTE_COUNT,it.vote_count )
-            findNavController().navigate(R.id.detailFragment,bundle)
+            bundle.putLong(Constants.MOVIE_ID, it.id)
+            bundle.putString(Constants.OVERVIEW, it.overview)
+            bundle.putDouble(Constants.POPULARITY, it.popularity)
+            bundle.putString(Constants.TITLE, it.title)
+            bundle.putString(Constants.POSTER_PATH, it.poster_path)
+            bundle.putString(Constants.RELEASE_DATE, it.release_date)
+            bundle.putDouble(Constants.VOTE_AVERAGE, it.vote_average)
+            bundle.putInt(Constants.VOTE_COUNT, it.vote_count)
+            findNavController().navigate(R.id.detailFragment, bundle)
         }
     }
 
@@ -69,9 +71,13 @@ class SearchFragment : Fragment() {
 
     private fun onClick() {
         binding.ivSearch.setOnClickListener {
-            if (binding.etSearch.text.toString().isNotEmpty()) {
-                showProgress(true)
-                viewModel.search(binding.etSearch.text.toString())
+            if (Utils.isInternetAvailable()) {
+                if (binding.etSearch.text.toString().isNotEmpty()) {
+                    showProgress(true)
+                    viewModel.search(binding.etSearch.text.toString())
+                }
+            } else {
+                Toast.makeText(requireContext(),"Check the internet Connection",Toast.LENGTH_SHORT).show()
             }
         }
     }
