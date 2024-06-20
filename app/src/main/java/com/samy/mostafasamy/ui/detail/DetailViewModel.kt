@@ -34,6 +34,8 @@ class DetailViewModel @Inject constructor(private val repository: DetailReposito
                     converter = { data: DetailResponse? -> convertToDetail(data) },
 //                    caching = { data: List<Popular> -> cachingPopular(data) },
                 )
+            }else{
+                _detailMovieStateFlow.value = NetworkState.Error(1,"Check Internet Connection")
             }
         }
 

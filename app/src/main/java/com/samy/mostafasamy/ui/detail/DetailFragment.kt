@@ -49,39 +49,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun setup() {
-            Log.d("hamoly","requireArguments().getLong(Constants.MOVIE_ID, 1022789).toInt() :${requireArguments().getLong(Constants.MOVIE_ID, 1022789).toInt()}")
 
-            val id = requireArguments().getLong(Constants.MOVIE_ID, 1022789)!!.toInt()
-            val title = requireArguments().getString(Constants.TITLE)!!
-            val overview = requireArguments().getString(Constants.OVERVIEW)!!
-            val popularity = requireArguments().getDouble(Constants.POPULARITY)!!
-            val posterPath = requireArguments().getString(Constants.POSTER_PATH)!!
-            val releaseDate = requireArguments().getString(Constants.RELEASE_DATE)!!
-            val voteAverage = requireArguments().getDouble(Constants.VOTE_AVERAGE)!!
-            val voteCount = requireArguments().getInt(Constants.VOTE_COUNT)!!
-            Log.d(
-                "hamoly",
-                "detail fragment id: ${id}"+
-                        ", overview: ${overview}"+
-                        ", popularity: ${popularity}"+
-                        ", title: ${title}"+
-                        ", poster_path: ${posterPath}"+
-                        ", release_date: ${releaseDate}"+
-                        ", vote_average: ${voteAverage}"+
-                        ", vote_count: ${voteCount}"
-            )
-            val detailView = Detail(id, title, posterPath, releaseDate, overview, popularity,voteAverage,voteCount)
-            Glide.with(binding.root.context)
-                .load(Constants.POSTER_URL + detailView.poster_path)
-                .error(R.drawable.baseline_image_24)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.iv)
-            binding.title.text = detailView.title
-            binding.overview.text = detailView.overview
-            binding.time.text = "release date ${detailView.release_date}"
-            binding.favorit.text = "popularity: ${detailView.popularity}"
-            binding.voteAverage.text = "Vote average: ${detailView.vote_average}"
-            binding.voteCount.text = "Vote count: ${detailView.vote_count}"
 
     }
     private fun observe() {
@@ -99,7 +67,8 @@ class DetailFragment : Fragment() {
 
                     is NetworkState.Error -> {
                         showProgress(false)
-                        Toast.makeText(requireContext(),it.msg, Toast.LENGTH_SHORT).show()
+                        uiLocal()
+//                        Toast.makeText(requireContext(),it.msg, Toast.LENGTH_SHORT).show()
                     }
 
                     is NetworkState.Result<*> -> {
@@ -112,6 +81,42 @@ class DetailFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun uiLocal() {
+        Log.d("hamoly","requireArguments().getLong(Constants.MOVIE_ID, 1022789).toInt() :${requireArguments().getLong(Constants.MOVIE_ID, 1022789).toInt()}")
+
+        val id = requireArguments().getLong(Constants.MOVIE_ID, 1022789)!!.toInt()
+        val title = requireArguments().getString(Constants.TITLE)!!
+        val overview = requireArguments().getString(Constants.OVERVIEW)!!
+        val popularity = requireArguments().getDouble(Constants.POPULARITY)!!
+        val posterPath = requireArguments().getString(Constants.POSTER_PATH)!!
+        val releaseDate = requireArguments().getString(Constants.RELEASE_DATE)!!
+        val voteAverage = requireArguments().getDouble(Constants.VOTE_AVERAGE)!!
+        val voteCount = requireArguments().getInt(Constants.VOTE_COUNT)!!
+        Log.d(
+            "hamoly",
+            "detail fragment id: ${id}"+
+                    ", overview: ${overview}"+
+                    ", popularity: ${popularity}"+
+                    ", title: ${title}"+
+                    ", poster_path: ${posterPath}"+
+                    ", release_date: ${releaseDate}"+
+                    ", vote_average: ${voteAverage}"+
+                    ", vote_count: ${voteCount}"
+        )
+        val detailView = Detail(id, title, posterPath, releaseDate, overview, popularity,voteAverage,voteCount)
+        Glide.with(binding.root.context)
+            .load(Constants.POSTER_URL + detailView.poster_path)
+            .error(R.drawable.baseline_image_24)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(binding.iv)
+        binding.title.text = detailView.title
+        binding.overview.text = detailView.overview
+        binding.time.text = "release date ${detailView.release_date}"
+        binding.favorit.text = "popularity: ${detailView.popularity}"
+        binding.voteAverage.text = "Vote average: ${detailView.vote_average}"
+        binding.voteCount.text = "Vote count: ${detailView.vote_count}"
     }
 
     fun <T> handleResult(response: T) {
@@ -151,10 +156,10 @@ class DetailFragment : Fragment() {
     private fun showProgress(b: Boolean) {
         if (b) {
             binding.progressbar.visibility = View.VISIBLE
-//            binding.ll.visibility = View.GONE
+            binding.ll.visibility = View.GONE
         } else {
             binding.progressbar.visibility = View.GONE
-//            binding.ll.visibility = View.VISIBLE
+            binding.ll.visibility = View.VISIBLE
         }
     }
 
