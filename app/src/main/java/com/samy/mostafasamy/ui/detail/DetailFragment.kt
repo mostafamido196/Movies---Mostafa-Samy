@@ -77,48 +77,8 @@ class DetailFragment : Fragment() {
             Log.d("hamoly", "e: ${e.message}")
         }
 
-//        viewModel.search(key.toInt())
     }
 
-    /* private fun observe() {
-         lifecycleScope.launch {
-             viewModel.detailMovieSateFlow.collect {
-                 Log.d("hamoly", "it.msg: ${it}")
-                 when (it) {
-                     is NetworkState.Idle -> {
-                         return@collect
-                     }
-
-                     is NetworkState.Loading -> {
-                         showProgress(true)
-                     }
-
-                     is NetworkState.Error -> {
-                         showProgress(false)
- //                        it.handleErrors(mContext, null)
-                     }
-
-                     is NetworkState.Result<*> -> {
-                         showProgress(false)
-                         handleResult(it.response as List<Popular>)
-
-                     }
-                 }
-
-             }
-         }
-
-
-     }
-
-     fun <T> handleResult(response: T) {
-         when (response) {
-             is List<*> -> {
-                 binding.tv.text = response.toString()
- //                uiRvPopular(response as List<Popular>)//convertToPopular(response.results) as List<Popular>)
-             }
-         }
-     }*/
     private fun showProgress(b: Boolean) {
         if (b) {
             binding.progressbar.visibility = View.VISIBLE

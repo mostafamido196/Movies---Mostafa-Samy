@@ -95,9 +95,13 @@ class HomeFragment : Fragment() {
 
         //rv
         binding.rvShowPopular.setLayoutManager(GridLayoutManager(context, 2))
+        popularArr = ArrayList<Popular>()
+        popularAdapter.submitList(popularArr)
         binding.rvShowPopular.adapter = popularAdapter
 
         binding.rvShowTopRating.setLayoutManager(GridLayoutManager(context, 2))
+        topRateArr = ArrayList<TopRating>()
+        topRatingAdapter.submitList(topRateArr)
         binding.rvShowTopRating.adapter = topRatingAdapter
 
     }
@@ -109,7 +113,7 @@ class HomeFragment : Fragment() {
             binding.popularLine.visibility = View.VISIBLE
             binding.rvShowPopular.visibility = View.VISIBLE
             binding.rvShowTopRating.visibility = View.INVISIBLE
-            popularAdapter.submitList(popularArr)
+//            popularAdapter.submitList(popularArr)
             Log.d("hamoly", "popularAdapter.currentList : ${popularAdapter.currentList}")
             Log.d(
                 "hamoly",
@@ -120,7 +124,7 @@ class HomeFragment : Fragment() {
             binding.topRatedLine.visibility = View.VISIBLE
             binding.rvShowPopular.visibility = View.INVISIBLE
             binding.rvShowTopRating.visibility = View.VISIBLE
-            topRatingAdapter.submitList(topRateArr)
+//            topRatingAdapter.submitList(topRateArr)
             Log.d("hamoly", "topRatingAdapter.currentList : ${topRatingAdapter.currentList}")
             Log.d(
                 "hamoly",
@@ -235,16 +239,16 @@ class HomeFragment : Fragment() {
                     }
 
                     is NetworkState.Loading -> {
-                        showProgress(true)
+//                        showProgress(true)
                     }
 
                     is NetworkState.Error -> {
-                        showProgress(false)
-                        //                        it.handleErrors(mContext, null)
+//                        showProgress(false)
+//                        it.handleErrors(mContext, null)
                     }
 
                     is NetworkState.Result<*> -> {
-                        showProgress(false)
+//                        showProgress(false)
                         handleResultTopRating(it.response as List<TopRating>)
 
                     }

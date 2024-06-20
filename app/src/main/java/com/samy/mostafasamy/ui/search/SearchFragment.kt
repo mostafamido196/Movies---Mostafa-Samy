@@ -71,14 +71,11 @@ class SearchFragment : Fragment() {
 
     private fun onClick() {
         binding.ivSearch.setOnClickListener {
-            if (Utils.isInternetAvailable()) {
                 if (binding.etSearch.text.toString().isNotEmpty()) {
                     showProgress(true)
                     viewModel.search(binding.etSearch.text.toString())
                 }
-            } else {
-                Toast.makeText(requireContext(),"Check the internet Connection",Toast.LENGTH_SHORT).show()
-            }
+
         }
     }
 
@@ -97,7 +94,7 @@ class SearchFragment : Fragment() {
 
                     is NetworkState.Error -> {
                         showProgress(false)
-//                        it.handleErrors(mContext, null)
+                    Toast.makeText(requireContext(),it.msg,Toast.LENGTH_SHORT).show()
                     }
 
                     is NetworkState.Result<*> -> {

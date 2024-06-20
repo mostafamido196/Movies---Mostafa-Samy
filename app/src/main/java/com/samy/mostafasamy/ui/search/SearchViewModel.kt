@@ -39,6 +39,8 @@ class SearchViewModel @Inject constructor(private val repository: SearchReposito
                     converter = { data: SearchResponse? -> convertToPopular(data) },
 //                    caching = { data: List<Popular> -> cachingPopular(data) },
                 )
+            }else{
+                _searchMovieStateFlow.value = NetworkState.Error(1,"Check Internet Connection")
             }
         }
 
