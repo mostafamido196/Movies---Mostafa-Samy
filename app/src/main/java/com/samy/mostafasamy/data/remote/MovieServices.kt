@@ -1,5 +1,6 @@
 package com.samy.mostafasamy.data.remote
 
+import android.graphics.Movie
 import com.samy.mostafasamy.pojo.response.DetailResponse
 import com.samy.mostafasamy.pojo.response.PopularResponse
 import com.samy.mostafasamy.pojo.response.SearchResponse
@@ -9,6 +10,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+
 
 interface MovieServices {
     @GET("movie/popular")
@@ -28,11 +30,17 @@ interface MovieServices {
     ): Response<SearchResponse?>
 
 
-        @GET("movie/{movie_id}")
-    fun getMovieDetails(
-        @Path("movie_id") movieId: Int,
-        @Query("api_key") apiKey: String,
-    ): Response<DetailResponse?>
+//        @GET("movie/{movie_id}")
+//    fun getMovieDetails(
+//        @Path("movie_id") movieId: Int,
+//        @Query("api_key") apiKey: String,
+//    ): Response<DetailResponse?>
 
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+//        @Query("language") language: String?,
+        @Query("api_key") apiKey: String,
+    ): Response<DetailResponse>
 
 }

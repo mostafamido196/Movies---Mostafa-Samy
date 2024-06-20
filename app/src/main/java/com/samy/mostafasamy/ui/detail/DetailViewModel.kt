@@ -23,12 +23,12 @@ class DetailViewModel @Inject constructor(private val repository: DetailReposito
     val detailMovieSateFlow get() = _detailMovieStateFlow
 
 
-    fun search(key: Int) {
+    fun getDetail(key: Int) {
         _detailMovieStateFlow.value = NetworkState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             if (Utils.isInternetAvailable()) {
                 Log.d("hamoly", " if (Utils.isInternetAvailable())")
-                runApi<DetailResponse?, Detail>(
+                runApi<DetailResponse, Detail>(
                     _detailMovieStateFlow,
                     repository.getMovie(authorization, key),
                     converter = { data: DetailResponse? -> convertToDetail(data) },
